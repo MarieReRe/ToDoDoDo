@@ -1,16 +1,26 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using To_Do.Data;
 using To_Do.Models;
 
 namespace To_Do.Models.Services
 {
     public class ToDoService : IToDoManager
     {
-        public Task CreateToDo(ToDo toDo)
+        private ToDoDbContext _context;
+
+        public ToDoService(ToDoDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task CreateToDo(ToDo toDo)
+        {
+            _context.Entry(toDo).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+
         }
 
         public Task DeleteToDo(int id)
