@@ -20,13 +20,16 @@ namespace To_Do.Controllers
         }
 
 
-        // GET: ToDoController
-        public ActionResult Index()
+        // GET: api/<ToDoController>
+        //This gets all To-Dos
+        [HttpGet]
+        public async Task <IEnumerable<ToDo>> GetAllToDos()
         {
-            return View();
+            return await _toDos.GetAllToDos();
         }
 
         // GET: ToDoController/Details/5
+        //This is an individual to-do
         public ActionResult Details(int id)
         {
             return View();
