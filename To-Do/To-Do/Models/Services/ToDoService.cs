@@ -41,9 +41,16 @@ namespace To_Do.Models.Services
             return todo;
         }
 
-        public Task<ToDo> UpdateToDo(ToDo todo, int id)
+        public async Task<ToDo> UpdateToDo(ToDo todo, int id)
         {
-            throw new NotImplementedException();
+            if (todo.Id == id)
+            {
+                _context.Entry(todo).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+
+            return todo;
         }
+    }
     }
 }
