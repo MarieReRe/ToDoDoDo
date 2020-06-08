@@ -30,9 +30,9 @@ namespace To_Do.Models.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<ToDo>> GetAllToDos()
+        public async Task<IEnumerable<ToDo>> GetAllToDos()
         {
-            throw new NotImplementedException();
+            return await _context.ToDos.ToListAsync();
         }
 
         public Task<ToDo> GetToDo(int id)
