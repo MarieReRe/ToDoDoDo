@@ -23,9 +23,11 @@ namespace To_Do.Models.Services
 
         }
 
-        public Task DeleteToDo(int id)
+        public async Task DeleteToDo(int id)
         {
-            throw new NotImplementedException();
+            var todo = await _context.ToDos.FindAsync(id);
+            _context.Entry(todo).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
 
         public Task<IEnumerable<ToDo>> GetAllToDos()

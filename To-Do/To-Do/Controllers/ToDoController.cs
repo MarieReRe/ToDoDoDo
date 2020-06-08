@@ -4,11 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using To_Do.Models;
 
 namespace To_Do.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ToDoController : Controller
     {
+        private IToDoManager _toDos;
         // GET: ToDoController
         public ActionResult Index()
         {
