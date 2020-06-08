@@ -35,9 +35,10 @@ namespace To_Do.Models.Services
             return await _context.ToDos.ToListAsync();
         }
 
-        public Task<ToDo> GetToDo(int id)
+        public async Task<ToDo> GetToDo(int id)
         {
-            throw new NotImplementedException();
+            var todo = await _context.ToDos.FindAsync(id);
+            return todo;
         }
 
         public Task<ToDo> UpdateToDo(ToDo todo, int id)
