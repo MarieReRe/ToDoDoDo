@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using To_Do.Data;
+using To_Do.Models;
+using To_Do.Models.Services;
 
 namespace To_Do
 {
@@ -23,6 +20,7 @@ namespace To_Do
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddControllers();
             //Add To-Do DbContext
             services.AddDbContext<ToDoDbContext>(options =>
@@ -30,6 +28,14 @@ namespace To_Do
                 //Install-Package Microsoft.EntityFrameworkCore.SqlServer
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddDbContext<UsersDbContext>(options =>
+            {
+                //Install-Package Microsoft.EntityFrameworkCore.SqlServer
+                options.UseSqlServer(Configuration.GetConnectionString("UsersConnection"));
+            });
+
+            //Add Dependency Injection
+            services.AddTransient<IToDoManager, ToDoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
