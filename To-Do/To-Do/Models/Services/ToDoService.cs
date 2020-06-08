@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using To_Do.Models;
 
-namespace To_Do.Model.Services
+namespace To_Do.Models.Services
 {
     public class ToDoService : IToDoManager
     {

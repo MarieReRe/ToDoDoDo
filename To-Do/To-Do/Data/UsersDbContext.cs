@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using To_Do.Model.Identity;
+using To_Do.Models.Identity;
 
 namespace To_Do.Data
 {

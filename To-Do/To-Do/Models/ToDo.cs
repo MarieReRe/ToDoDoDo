@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace To_Do.Model
+namespace To_Do.Models
 {
     public class ToDo
     {
