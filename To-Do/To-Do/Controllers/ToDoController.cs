@@ -13,6 +13,13 @@ namespace To_Do.Controllers
     public class ToDoController : Controller
     {
         private IToDoManager _toDos;
+
+        public ToDoController(IToDoManager toDos)
+        {
+            _toDos = toDos;
+        }
+
+
         // GET: ToDoController
         public ActionResult Index()
         {
