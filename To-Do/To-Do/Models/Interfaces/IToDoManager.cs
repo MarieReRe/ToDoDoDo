@@ -20,7 +20,7 @@ namespace To_Do.Models.Interfaces
         Task<bool> UpdateToDo(int id, ToDo toDo);
 
         //Delete
-        Task DeleteToDo(int id);
+        Task<ToDo> DeleteToDo(int id);
        
     }
 }

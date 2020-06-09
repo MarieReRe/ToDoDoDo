@@ -47,9 +47,10 @@ namespace To_Do.Controllers
 
         // GET: ToDoController/Edit/5
         //PUT: UPDATE
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateToDo(int id, ToDo toDo)
         {
-            if(id != toDo.Id)
+            if (id != toDo.Id)
             {
                 return BadRequest();
             }
@@ -61,41 +62,19 @@ namespace To_Do.Controllers
             return NoContent();
 
         }
-
-        // POST: ToDoController/Edit/5
-        [HttpPost]
+       
+        // Deletion by To Do Id
+        [HttpDelete("{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task <ActionResult<ToDo>> DeleteToDo(int id)
         {
-            try
+            var toDo = await _toDos.DeleteToDo(id);
+            if(toDo == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ToDoController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ToDoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return toDo;
+            
         }
     }
 }
