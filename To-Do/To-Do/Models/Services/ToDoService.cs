@@ -43,6 +43,14 @@ namespace To_Do.Models.Services
             return todo;
         }
 
+        public Task<List<ToDo>> ListAsync()
+        {
+            return _context.ToDos
+                .Include(toDo => toDo.Title)
+                .OrderByDescending(toDo => toDo.ExpectedCompletion)
+                .ToListAsync();
+        }
+
         public async Task<ToDo> UpdateToDo(ToDo todo, int id)
         {
             if (todo.Id == id)

@@ -21,6 +21,6 @@ namespace To_Do.Models.Interfaces
 
         //Delete
         Task<ToDo> DeleteToDo(int id);
-       
+        Task<List<ToDo>> ListAsync();
     }
 }
