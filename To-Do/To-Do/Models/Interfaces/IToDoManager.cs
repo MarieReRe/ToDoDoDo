@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace To_Do.Models
+namespace To_Do.Models.Interfaces
+
 {
    public interface IToDoManager
     {
@@ -16,10 +17,10 @@ namespace To_Do.Models
 
         //Update
         Task<ToDo> UpdateToDo(ToDo todo, int id);
+        Task<bool> UpdateToDo(int id, ToDo toDo);
 
         //Delete
         Task DeleteToDo(int id);
-
-
+       
     }
 }

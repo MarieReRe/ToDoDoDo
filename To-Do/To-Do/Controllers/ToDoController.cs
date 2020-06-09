@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using To_Do.Models;
+using To_Do.Models.Interfaces;
 
 namespace To_Do.Controllers
 {
@@ -12,13 +13,12 @@ namespace To_Do.Controllers
     [ApiController]
     public class ToDoController : Controller
     {
-        private IToDoManager _toDos;
+        private readonly IToDoManager _toDos;
 
         public ToDoController(IToDoManager toDos)
         {
-            _toDos = toDos;
+           this._toDos = toDos;
         }
-
 
         // GET: api/<ToDoController>
         //This gets all To-Dos
@@ -30,36 +30,36 @@ namespace To_Do.Controllers
 
         // GET: ToDoController/Details/5
         //This is an individual to-do
-        public ActionResult Details(int id)
+        [HttpGet("{id}")]
+        public async Task<ToDo> DetailsForToDo(int id)
         {
-            return View();
+            return await _toDos.GetToDo(id);
         }
 
-        // GET: ToDoController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ToDoController/Create
+        // POST: ToDoController/Create or Save New
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult<ToDo>> CreateNewToDo(ToDo toDo)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            await _toDos.CreateToDo(toDo);
+            return CreatedAtAction("GetToDo", new { id = toDo.Id }, toDo);
         }
 
         // GET: ToDoController/Edit/5
-        public ActionResult Edit(int id)
+        //PUT: UPDATE
+        public async Task<IActionResult> UpdateToDo(int id, ToDo toDo)
         {
-            return View();
+            if(id != toDo.Id)
+            {
+                return BadRequest();
+            }
+            bool updatedToDo = await _toDos.UpdateToDo(id, toDo);
+            if (!updatedToDo)
+            {
+                return NotFound();
+            }
+            return NoContent();
+
         }
 
         // POST: ToDoController/Edit/5
