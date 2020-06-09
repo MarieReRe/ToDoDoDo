@@ -13,32 +13,32 @@ namespace ToDo.Tests
     {
         
         [Fact]
-        public void GetToDo_ReturnsHttpNotFound_ForInvalidToDo()
+        public async void GetToDo_ReturnsHttpNotFound_ForInvalidToDo()
         {
             //arrange:
-            
-
             var mockRepo = new Mock<IToDoManager>();
-
-          
             var controller = new ToDoController(mockRepo.Object);
 
             //act
-           var actionResult = controller.DetailsForToDo(10);
+           var actionResult = await controller.DetailsForToDo(10);
 
             //assert
+            Assert.IsType<NotFoundResult>( actionResult.Result);
+            Assert.Null(actionResult.Value);
 
-            Assert.IsType<Task<ToDos>>( actionResult);
         }
         [Fact]
-        public void DeleteReturnsOk()
+        public async void DeleteReturnsOk()
         {
+            //Arrange
             var mockRepo = new Mock<IToDoManager>();
             var controller = new ToDoController(mockRepo.Object);
 
-            var actionResult = controller.DeleteToDo(10);
+            //Act
+            var actionResult = await controller.DeleteToDo(10);
 
-            Assert.IsType<Task<ToDos>>(actionResult);
+            //Assert
+            Assert.IsType<NotFoundResult>(actionResult.Result);
 
         }
 
