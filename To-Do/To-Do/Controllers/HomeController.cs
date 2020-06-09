@@ -9,7 +9,7 @@ using To_Do.Models.Interfaces;
 
 namespace To_Do.Controllers
 {
-  
+
     public class HomeController : Controller
     {
         private readonly IToDoManager _toDoManager;
@@ -18,18 +18,13 @@ namespace To_Do.Controllers
         {
             _toDoManager = toDoManager;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var toDoList = await _toDoManager.ListAsync();
-            var model = toDoList.Select(toDoItem => new ToDo()
-            {
-                Id = toDoItem.Id,
-                Title = toDoItem.Title,
-                ExpectedCompletion = toDoItem.ExpectedCompletion,
-                Assignee = toDoItem.Assignee,
-                Difficulty = toDoItem.Difficulty
-            });
-            return View(model);
+         
+            return View();
         }
+
+        
+
     }
 }

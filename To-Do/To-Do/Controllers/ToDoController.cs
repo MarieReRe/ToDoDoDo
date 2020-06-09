@@ -23,7 +23,7 @@ namespace To_Do.Controllers
         // GET: api/<ToDoController>
         //This gets all To-Dos
         [HttpGet]
-        public async Task <IEnumerable<ToDo>> GetAllToDos()
+        public async Task <IEnumerable<ToDos>> GetAllToDos()
         {
             return await _toDos.GetAllToDos();
         }
@@ -31,15 +31,20 @@ namespace To_Do.Controllers
         // GET: ToDoController/Details/5
         //This is an individual to-do
         [HttpGet("{id}")]
-        public async Task<ToDo> DetailsForToDo(int id)
+        public async Task<ActionResult<ToDos>> DetailsForToDo(int id)
         {
-            return await _toDos.GetToDo(id);
+            var result = await _toDos.GetToDo(id);
+            if(result == null)
+            {
+                return NotFound();
+            }
+            return result;
         }
 
         // POST: ToDoController/Create or Save New
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<ToDo>> CreateNewToDo(ToDo toDo)
+        public async Task<ActionResult<ToDos>> CreateNewToDo(ToDos toDo)
         {
             await _toDos.CreateToDo(toDo);
             return CreatedAtAction("GetToDo", new { id = toDo.Id }, toDo);
@@ -48,7 +53,7 @@ namespace To_Do.Controllers
         // GET: ToDoController/Edit/5
         //PUT: UPDATE
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateToDo(int id,[FromBody] ToDo toDo)
+        public async Task<IActionResult> UpdateToDo(int id,[FromBody] ToDos toDo)
         {
             if (id != toDo.Id)
             {
@@ -63,7 +68,7 @@ namespace To_Do.Controllers
         // Deletion by To Do Id
         [HttpDelete("{id}")]
         [ValidateAntiForgeryToken]
-        public async Task <ActionResult<ToDo>> DeleteToDo(int id)
+        public async Task <ActionResult<ToDos>> DeleteToDo(int id)
         {
             var toDo = await _toDos.DeleteToDo(id);
             if(toDo == null)

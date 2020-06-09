@@ -13,8 +13,8 @@ namespace To_Do.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ToDo>().HasData(
-                new ToDo
+            modelBuilder.Entity<ToDos>().HasData(
+                new ToDos
                 {
                     Id = 1,
                     Title = "Dry Storage Inventory",
@@ -22,7 +22,7 @@ namespace To_Do.Data
                     Assignee = "Marie",
                     Difficulty = 3,
                 },
-                 new ToDo
+                 new ToDos
                  {
                      Id = 2,
                      Title = "Freezer",
@@ -30,7 +30,7 @@ namespace To_Do.Data
                      Assignee = "Brice",
                      Difficulty = 4,
                  },
-                 new ToDo
+                 new ToDos
                  {
                         Id = 3,
                         Title = "Cold Storage Inventory",
@@ -40,6 +40,6 @@ namespace To_Do.Data
                  });
 
         }
-        public DbSet<ToDo> ToDos { get; set; }
+        public DbSet<ToDos> ToDos { get; set; }
     }
 }

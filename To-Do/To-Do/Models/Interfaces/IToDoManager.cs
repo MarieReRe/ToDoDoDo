@@ -9,18 +9,18 @@ namespace To_Do.Models.Interfaces
    public interface IToDoManager
     {
         //Create
-        Task CreateToDo(ToDo toDo);
+        Task CreateToDo(ToDos toDo);
 
         //Read
-        Task<ToDo> GetToDo(int id);
-        Task<IEnumerable<ToDo>> GetAllToDos();
+        Task<ToDos> GetToDo(int id);
+        Task<IEnumerable<ToDos>> GetAllToDos();
 
         //Update
-        Task<ToDo> UpdateToDo(ToDo todo, int id);
+        Task<ToDos> UpdateToDo(ToDos todo, int id);
       
 
         //Delete
-        Task<ToDo> DeleteToDo(int id);
-        Task<List<ToDo>> ListAsync();
+        Task<ToDos> DeleteToDo(int id);
+       
     }
 }
