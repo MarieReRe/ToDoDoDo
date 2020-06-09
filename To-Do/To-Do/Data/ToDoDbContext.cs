@@ -10,6 +10,7 @@ namespace To_Do.Data
         {
 
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ToDo>().HasData(
