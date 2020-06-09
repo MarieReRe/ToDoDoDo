@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using To_Do.Data;
 using To_Do.Models;
+using To_Do.Models.Interfaces;
 
 namespace To_Do.Models.Services
 {
@@ -16,32 +17,36 @@ namespace To_Do.Models.Services
         {
             _context = context;
         }
-        public async Task CreateToDo(ToDo toDo)
+        public async Task CreateToDo(ToDos toDo)
         {
             _context.Entry(toDo).State = EntityState.Added;
             await _context.SaveChangesAsync();
 
         }
 
-        public async Task DeleteToDo(int id)
+        public async Task<ToDos> DeleteToDo(int id)
         {
             var todo = await _context.ToDos.FindAsync(id);
             _context.Entry(todo).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
+            return todo;
         }
 
-        public async Task<IEnumerable<ToDo>> GetAllToDos()
+        public async Task<IEnumerable<ToDos>> GetAllToDos()
         {
             return await _context.ToDos.ToListAsync();
         }
 
-        public async Task<ToDo> GetToDo(int id)
+        //Used for First Mock Test
+        public async Task<ToDos> GetToDo(int id)
         {
             var todo = await _context.ToDos.FindAsync(id);
             return todo;
         }
 
-        public async Task<ToDo> UpdateToDo(ToDo todo, int id)
+       
+
+        public async Task<ToDos> UpdateToDo(ToDos todo, int id)
         {
             if (todo.Id == id)
             {
@@ -51,6 +56,8 @@ namespace To_Do.Models.Services
 
             return todo;
         }
+
+      
     }
-   
+
 }

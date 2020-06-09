@@ -5,8 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using To_Do.Data;
-using To_Do.Models;
 using To_Do.Models.Services;
+using To_Do.Models.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace To_Do
 {
@@ -33,6 +35,8 @@ namespace To_Do
                 //Install-Package Microsoft.EntityFrameworkCore.SqlServer
                 options.UseSqlServer(Configuration.GetConnectionString("UsersConnection"));
             });
+            //Register JWT Authentication Scheme
+            
 
             //Add Dependency Injection
             services.AddTransient<IToDoManager, ToDoService>();
@@ -41,6 +45,9 @@ namespace To_Do
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //Adds the authentication middleware to the pipeline
+            app.UseAuthentication();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -48,6 +55,9 @@ namespace To_Do
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            //add authorization
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

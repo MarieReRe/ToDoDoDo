@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using To_Do.Models;
+using To_Do.Models.Interfaces;
 
 namespace To_Do.Controllers
 {
@@ -12,80 +13,70 @@ namespace To_Do.Controllers
     [ApiController]
     public class ToDoController : Controller
     {
-        private IToDoManager _toDos;
-        // GET: ToDoController
-        public ActionResult Index()
+        private readonly IToDoManager _toDos;
+
+        public ToDoController(IToDoManager toDos)
         {
-            return View();
+           this._toDos = toDos;
+        }
+
+        // GET: api/<ToDoController>
+        //This gets all To-Dos
+        [HttpGet]
+        public async Task <IEnumerable<ToDos>> GetAllToDos()
+        {
+            return await _toDos.GetAllToDos();
         }
 
         // GET: ToDoController/Details/5
-        public ActionResult Details(int id)
+        //This is an individual to-do
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ToDos>> DetailsForToDo(int id)
         {
-            return View();
+            var result = await _toDos.GetToDo(id);
+            if(result == null)
+            {
+                return NotFound();
+            }
+            return result;
         }
 
-        // GET: ToDoController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ToDoController/Create
+        // POST: ToDoController/Create or Save New
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult<ToDos>> CreateNewToDo(ToDos toDo)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            await _toDos.CreateToDo(toDo);
+            return CreatedAtAction("GetToDo", new { id = toDo.Id }, toDo);
         }
 
         // GET: ToDoController/Edit/5
-        public ActionResult Edit(int id)
+        //PUT: UPDATE
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateToDo(int id,[FromBody] ToDos toDo)
         {
-            return View();
-        }
+            if (id != toDo.Id)
+            {
+                return BadRequest();
+            }
+            await _toDos.UpdateToDo(toDo, id);
+            return Ok("Complete");
 
-        // POST: ToDoController/Edit/5
-        [HttpPost]
+        }
+       
+  
+        // Deletion by To Do Id
+        [HttpDelete("{id}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task <ActionResult<ToDos>> DeleteToDo(int id)
         {
-            try
+            var toDo = await _toDos.DeleteToDo(id);
+            if(toDo == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ToDoController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ToDoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return toDo;
+            
         }
     }
 }
