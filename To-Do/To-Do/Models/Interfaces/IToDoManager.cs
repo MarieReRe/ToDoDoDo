@@ -17,7 +17,7 @@ namespace To_Do.Models.Interfaces
 
         //Update
         Task<ToDo> UpdateToDo(ToDo todo, int id);
-        Task<bool> UpdateToDo(int id, ToDo toDo);
+      
 
         //Delete
         Task<ToDo> DeleteToDo(int id);

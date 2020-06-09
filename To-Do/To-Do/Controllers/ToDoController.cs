@@ -48,21 +48,18 @@ namespace To_Do.Controllers
         // GET: ToDoController/Edit/5
         //PUT: UPDATE
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateToDo(int id, ToDo toDo)
+        public async Task<IActionResult> UpdateToDo(int id,[FromBody] ToDo toDo)
         {
             if (id != toDo.Id)
             {
                 return BadRequest();
             }
-            bool updatedToDo = await _toDos.UpdateToDo(id, toDo);
-            if (!updatedToDo)
-            {
-                return NotFound();
-            }
-            return NoContent();
+            await _toDos.UpdateToDo(toDo, id);
+            return Ok("Complete");
 
         }
        
+  
         // Deletion by To Do Id
         [HttpDelete("{id}")]
         [ValidateAntiForgeryToken]

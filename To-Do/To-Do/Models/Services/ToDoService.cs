@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using To_Do.Data;
 using To_Do.Models;
+using To_Do.Models.Interfaces;
 
 namespace To_Do.Models.Services
 {
@@ -23,11 +24,12 @@ namespace To_Do.Models.Services
 
         }
 
-        public async Task DeleteToDo(int id)
+        public async Task<ToDo> DeleteToDo(int id)
         {
             var todo = await _context.ToDos.FindAsync(id);
             _context.Entry(todo).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
+            return todo;
         }
 
         public async Task<IEnumerable<ToDo>> GetAllToDos()
@@ -51,6 +53,8 @@ namespace To_Do.Models.Services
 
             return todo;
         }
+
+      
     }
-   
+
 }
