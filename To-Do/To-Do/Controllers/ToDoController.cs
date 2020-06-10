@@ -23,10 +23,17 @@ namespace To_Do.Controllers
         {
            this._toDos = toDos;
         }
+        // Get all general to-dos
+        // GET: api/<PostsController>
+        [HttpGet]
+        public async Task<IEnumerable<ToDos>> GetAllToDos()
+        {
+            return await _toDos.GetAllToDos();
+        }
 
-        // GET: api/<ToDoController>
-        //This gets all To-Dos
-        [HttpGet("MyToDos")]
+            // GET: api/<ToDoController>
+            //This gets all To-Dos
+            [HttpGet("MyToDos")]
         [Authorize]
         public async Task <IEnumerable<ToDos>> GetAllMyToDos()
         {
