@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using To_Do.Data;
 using To_Do.Models;
+using To_Do.Models.DTOs;
 using To_Do.Models.Interfaces;
 
 namespace To_Do.Models.Services
@@ -30,6 +31,13 @@ namespace To_Do.Models.Services
             _context.Entry(todo).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
             return todo;
+        }
+
+        public async Task<IEnumerable<ToDos>> GetAllMyPosts(string userId)
+        {
+            return await _context.ToDos
+                .Where (toDo => toDo.CreatedByUserId != null && toDo.CreatedByUserId == userId)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<ToDos>> GetAllToDos()
@@ -58,6 +66,11 @@ namespace To_Do.Models.Services
         }
 
       
+
+        Task<ToDoDTO> IToDoManager.GetToDo(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
