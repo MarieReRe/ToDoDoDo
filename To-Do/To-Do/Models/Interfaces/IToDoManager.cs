@@ -23,6 +23,6 @@ namespace To_Do.Models.Interfaces
 
         //Delete
         Task<ToDos> DeleteToDo(int id);
-       
+        Task<IEnumerable<ToDos>> GetAllMyPosts(string userId);
     }
 }

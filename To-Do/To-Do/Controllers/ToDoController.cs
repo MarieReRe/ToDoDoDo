@@ -39,7 +39,7 @@ namespace To_Do.Controllers
         [Authorize]
         public async Task <IEnumerable<ToDos>> GetAllMyToDos()
         {
-            return await _toDos.GetAllToDos();
+            return await _toDos.GetAllMyPosts(GetUserId());
         }
 
         // GET: ToDoController/Details/5
