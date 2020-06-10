@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace To_Do.Controllers
 {
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class UsersController : Controller
     {
         public IActionResult Index()

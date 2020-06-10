@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace To_Do.Models.Interfaces
 {
-    interface IUserManager
+    public interface IUserManager
     {
     }
 }
