@@ -35,5 +35,9 @@ namespace To_Do.Models.Services
         {
             return userManager.FindByIdAsync(userId);
         }
+        public Task<ToDoUser> FindByNameAsync(string username)
+        {
+            return userManager.FindByNameAsync(username);
+        }
     }
 }
