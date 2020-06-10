@@ -23,6 +23,9 @@ namespace To_Do.Models.Services
         {
             return userManager.AccessFailedAsync(user);
         }
-
+        public Task<bool> CheckPasswordAsync(ToDoUser user, string password)
+        {
+            return userManager.CheckPasswordAsync(user, password);
+        }
     }
 }
