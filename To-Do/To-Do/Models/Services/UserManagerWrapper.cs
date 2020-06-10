@@ -11,6 +11,6 @@ namespace To_Do.Models.Services
     public class UserManagerWrapper : IUserManager
     {
         private readonly UserManager<ToDoUser> userManager;
-       
+        private readonly IConfiguration configuration;
     }
 }
