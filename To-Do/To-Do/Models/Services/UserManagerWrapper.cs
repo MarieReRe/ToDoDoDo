@@ -73,7 +73,16 @@ namespace To_Do.Models.Services
             return tokenString;
         }
     }
-
+    public interface IUserManager
+    {
+        Task<ToDoUser> FindByNameAsync(string username);
+        Task<bool> CheckPasswordAsync(ToDoUser user, string password);
+        Task AccessFailedAsync(ToDoUser user);
+        Task<IdentityResult> CreateAsync(ToDoUser user, string password);
+        Task<ToDoUser> FindByIdAsync(string userId);
+        Task<IdentityResult> UpdateAsync(ToDoUser user);
+        string CreateToken(ToDoUser user);
+    }
 
 }
-}
+
