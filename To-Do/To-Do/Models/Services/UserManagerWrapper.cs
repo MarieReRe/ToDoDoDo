@@ -39,5 +39,10 @@ namespace To_Do.Models.Services
         {
             return userManager.FindByNameAsync(username);
         }
+        public Task<IdentityResult> UpdateAsync(ToDoUser user)
+        {
+            return userManager.UpdateAsync(user);
+        }
+
     }
 }
