@@ -27,5 +27,9 @@ namespace To_Do.Models.Services
         {
             return userManager.CheckPasswordAsync(user, password);
         }
+        public Task<IdentityResult> CreateAsync(ToDoUser user, string password)
+        {
+            return userManager.CreateAsync(user, password);
+        }
     }
 }
