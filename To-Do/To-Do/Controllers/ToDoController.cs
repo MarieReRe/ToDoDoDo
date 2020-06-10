@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using To_Do.Models;
+using To_Do.Models.DTOs;
 using To_Do.Models.Interfaces;
+
 
 namespace To_Do.Controllers
 {
@@ -43,7 +45,7 @@ namespace To_Do.Controllers
         // GET: ToDoController/Details/5
         //This is an individual to-do
         [HttpGet("{id}")]
-        public async Task<ActionResult<ToDos>> DetailsForToDo(int id)
+        public async Task<ActionResult<ToDoDTO>> DetailsForToDo(int id)
         {
             var result = await _toDos.GetToDo(id);
             if(result == null)

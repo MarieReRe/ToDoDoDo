@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using To_Do.Models.DTOs;
+
 
 namespace To_Do.Models.Interfaces
 
@@ -12,7 +14,7 @@ namespace To_Do.Models.Interfaces
         Task CreateToDo(ToDos toDo);
 
         //Read
-        Task<ToDos> GetToDo(int id);
+        Task<ToDoDTO> GetToDo(int id);
         Task<IEnumerable<ToDos>> GetAllToDos();
 
         //Update
