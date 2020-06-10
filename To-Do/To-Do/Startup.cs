@@ -65,9 +65,10 @@ namespace To_Do
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseAuthentication();
+        
 
             //add authorization
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
