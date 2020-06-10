@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using To_Do.Models.Identity;
+using System.Text;
 
 namespace To_Do
 {
@@ -46,8 +47,29 @@ namespace To_Do
 
             //Register JWT Authentication Scheme
            
-            services.AddAuthentication()
-                .AddJwtBearer();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    var secret = Configuration["JWT:Secret"];
+                    var secretBytes = Encoding.UTF8.GetBytes(secret);
+                    var signingKey = new SymmetricSecurityKey(secretBytes);
+
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingKey,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                    };
+
+                });
 
         }
 
@@ -67,7 +89,8 @@ namespace To_Do
 
         
 
-            //add authorization
+            //add authorization & authentication
+
             app.UseAuthentication();
             app.UseAuthorization();
 
