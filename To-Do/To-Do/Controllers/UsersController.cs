@@ -24,6 +24,8 @@ namespace To_Do.Controllers
             this.userManager = userManager;
         }
 
+        // Checking self authorization
+
       
         //Fist we need to register a user
         [HttpPost("Register")]
