@@ -11,6 +11,8 @@ namespace To_Do.Models.DTOs
 
         public string Title { get; set; }
 
+        public string CreatedBy { get; set; }
+
         public DateTime? ExpectedCompletion { get; set; }
 
         public string Assignee { get; set; }
