@@ -7,5 +7,7 @@ namespace To_Do.Models.Identity
 {
     public class UserWithtoken
     {
+        public string UserId { get; set; }
+        public string Token { get; set; }
     }
 }
