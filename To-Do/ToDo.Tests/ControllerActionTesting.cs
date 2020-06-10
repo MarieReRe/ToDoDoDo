@@ -126,17 +126,31 @@ namespace ToDo.Tests
             // assert
             Assert.IsType<NotFoundResult>(result);
         }
-
-        [Fact]
+        //change this to a theory
+      /*  [Fact]
         public async Task UserUpdatedSuccess()
         {
             //arrange
+            var userService = new Mock<IUserManager>();
+
+            var user = new ToDoUser
+            {
+                Id = "77",
+                UserName = "Wow"
+            };
+
+            userService.Setup(s => s.FindByIdAsync(user.Id)).ReturnsAsync(user);
+            var controller = new UsersController(userService.Object);
+            var data = new UpdateUserData { FirstName = "Jessica" };
 
             //act
-
+            var result = await controller.UpdateUser(user.Id, data);
             // assert
+         var okResult = Assert.IsType<OkObjectResult>(result);
+          var savedUser =   Assert.IsType<UserDTO>(okResult.Value)
+            userService.Verify(s => s.UpdateAsync(user));
         }
-
+      */
 
     }
 }

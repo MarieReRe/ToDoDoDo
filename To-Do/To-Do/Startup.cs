@@ -37,13 +37,18 @@ namespace To_Do
                 //Install-Package Microsoft.EntityFrameworkCore.SqlServer
                 options.UseSqlServer(Configuration.GetConnectionString("UsersConnection"));
             });
-            //Register JWT Authentication Scheme
+           
             services.AddIdentity<ToDoUser, IdentityRole>()
               .AddEntityFrameworkStores<UsersDbContext>();
 
             //Add Dependency Injection
             services.AddTransient<IToDoManager, ToDoService>();
-          
+
+            //Register JWT Authentication Scheme
+           
+            services.AddAuthentication()
+                .AddJwtBearer();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +64,8 @@ namespace To_Do
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
 
             //add authorization
             app.UseAuthorization();
