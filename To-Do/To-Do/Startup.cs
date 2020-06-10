@@ -57,6 +57,8 @@ namespace To_Do
                 {
                     var secret = Configuration["JWT:Secret"];
                     var secretBytes = Encoding.UTF8.GetBytes(secret);
+
+                    // Symmetric Security Key is what encryps and decrypts your data
                     var signingKey = new SymmetricSecurityKey(secretBytes);
 
                     options.RequireHttpsMetadata = false;
