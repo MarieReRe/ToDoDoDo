@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using To_Do.Models.Identity;
+using To_Do.Models.Services;
 
 namespace To_Do.Controllers
 {
@@ -15,14 +16,15 @@ namespace To_Do.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        private readonly UserManager<ToDoUser> userManager;
-        private readonly IConfiguration configuration;
+        //private readonly UserManager<ToDoUser> userManager;
+        private readonly IUserManager userManager;
 
-        public UsersController(UserManager<ToDoUser> userManager, IConfiguration configuration)
+        public UsersController(IUserManager userManager)
         {
             this.userManager = userManager;
-            this.configuration = configuration;
         }
+
+      
         //Fist we need to register a user
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterData register)
@@ -44,7 +46,8 @@ namespace To_Do.Controllers
             return Ok(new UserWithToken
             {
                 UserId = user.Id,
-                Token = CreateToken(user)
+                //From UserManagerWrapper
+                Token = userManager.CreateToken(user)
             });
 
 
@@ -64,7 +67,7 @@ namespace To_Do.Controllers
                     return Ok(new UserWithToken
                     {
                         UserId = user.Id,
-                        Token = CreateToken(user)
+                        Token = userManager.CreateToken(user)
                     });
                 }
 
@@ -96,34 +99,6 @@ namespace To_Do.Controllers
                 user.BirthDate,
             });
         }
-
-
-        //TokenCreation
-        public string CreateToken(ToDoUser user)
-        {
-            var secret = configuration["JWT:Secret"];
-            var secretBytes = Encoding.UTF8.GetBytes(secret);
-
-            //SystemmetricSecurity is a way you encrypt and decrypt our data
-            var signingKey = new SymmetricSecurityKey(secretBytes);
-
-            var tokenClaims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim("UserId", user.Id),
-                new Claim("FullName", $"{user.FirstName} {user.LastName}")
-            };
-
-            var token = new JwtSecurityToken(
-                claims: tokenClaims,
-                signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
-                );
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return tokenString;
-        }
-
 
         public IActionResult Index()
         {

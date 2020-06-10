@@ -3,6 +3,7 @@ using Moq;
 using System.Threading.Tasks;
 using To_Do.Controllers;
 using To_Do.Models;
+using To_Do.Models.Identity;
 using To_Do.Models.Interfaces;
 using To_Do.Models.Services;
 using Xunit;
@@ -42,6 +43,23 @@ namespace ToDo.Tests
 
         }
 
-      
+        [Fact]
+        public async Task LoginFailsWithMissingUser()
+        {
+            // Arrange
+            var userManager = new Mock<IUserManager>();
+
+            var login = new LoginData { Username = "Maaaaaaariee" };
+
+            var controller = new UsersController(userManager.Object);
+
+            // Act
+            var result = await controller.Login(login);
+
+            // Assert
+            Assert.IsType<UnauthorizedResult>(result);
+        }
+
+
     }
 }
