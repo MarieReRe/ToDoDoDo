@@ -77,7 +77,29 @@ namespace To_Do.Controllers
 
             return Unauthorized();
         }
+        // Update User if necessary
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> UpdateUser(string userId, UpdateUserData data)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound();
 
+            user.FirstName = data.FirstName;
+            user.LastName = data.LastName;
+            user.BirthDate = data.BirthDate;
+
+            await userManager.UpdateAsync(user);
+
+            return Ok(new
+            {
+                UserId = user.Id,
+                user.Email,
+                user.FirstName,
+                user.LastName,
+                user.BirthDate,
+            });
+        }
 
 
 
