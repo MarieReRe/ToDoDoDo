@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using To_Do.Models;
@@ -15,6 +16,9 @@ namespace To_Do.Controllers
     {
         private readonly IToDoManager _toDos;
 
+        // set claim type
+        public object ClaimType { get; private set; }
+
         public ToDoController(IToDoManager toDos)
         {
            this._toDos = toDos;
@@ -22,8 +26,9 @@ namespace To_Do.Controllers
 
         // GET: api/<ToDoController>
         //This gets all To-Dos
-        [HttpGet]
-        public async Task <IEnumerable<ToDos>> GetAllToDos()
+        [HttpGet("MyToDos")]
+        [Authorize]
+        public async Task <IEnumerable<ToDos>> GetAllMyToDos()
         {
             return await _toDos.GetAllToDos();
         }
@@ -46,6 +51,9 @@ namespace To_Do.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult<ToDos>> CreateNewToDo(ToDos toDo)
         {
+
+
+
             await _toDos.CreateToDo(toDo);
             return CreatedAtAction("GetToDo", new { id = toDo.Id }, toDo);
         }
