@@ -35,7 +35,7 @@ namespace To_Do.Controllers
 
             // GET: api/<ToDoController>
             //This gets all To-Dos
-            [HttpGet("MyToDos")]
+        [HttpGet("MyToDos")]
         [Authorize]
         public async Task <IEnumerable<ToDos>> GetAllMyToDos()
         {
@@ -57,10 +57,11 @@ namespace To_Do.Controllers
 
         // POST: ToDoController/Create or Save New
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<ToDos>> CreateNewToDo(ToDos toDo)
+        public async Task<ActionResult<ToDos>> CreateNewToDo([FromBody] ToDos toDo)
         {
-
+            toDo.CreatedByUserId = GetUserId();
 
 
             await _toDos.CreateToDo(toDo);
@@ -94,6 +95,13 @@ namespace To_Do.Controllers
             }
             return toDo;
             
+        }
+
+
+        // we need to get the userId
+        private string GetUserId()
+        {
+            return ((ClaimsIdentity)User.Identity).FindFirst("UserId")?.Value;
         }
     }
 }
