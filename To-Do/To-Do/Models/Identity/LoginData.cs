@@ -10,6 +10,7 @@ namespace To_Do.Models.Identity
     {
         [Required]
         public string Username { get; set; }
+        
         [Required]
         public string Password { get; set; }
     }

@@ -54,6 +54,32 @@ namespace To_Do.Controllers
 
         }
 
+        //After Registering we need to login
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginData login)
+        {
+            var user = await userManager.FindByNameAsync(login.Username);
+
+            if (user != null)
+            {
+                var result = await userManager.CheckPasswordAsync(user, login.Password);
+                if (result)
+                {
+                    return Ok(new UserWithToken
+                    {
+                        UserId = user.Id,
+                        Token = CreateToken(user)
+                    });
+                }
+
+                await userManager.AccessFailedAsync(user);
+            }
+
+            return Unauthorized();
+        }
+
+
+
 
         public string CreateToken(ToDoUser user)
         {
