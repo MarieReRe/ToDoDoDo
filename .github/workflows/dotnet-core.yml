@@ -10,11 +10,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+  
+    defaults: 
+      run: 
+        working-directory: To-Do
     steps:
     - uses: actions/checkout@v2
-    - name: cd
-      run: cd To-Do
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
