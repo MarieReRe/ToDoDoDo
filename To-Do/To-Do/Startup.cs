@@ -9,6 +9,8 @@ using To_Do.Models.Services;
 using To_Do.Models.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
+using To_Do.Models.Identity;
 
 namespace To_Do
 {
@@ -36,10 +38,12 @@ namespace To_Do
                 options.UseSqlServer(Configuration.GetConnectionString("UsersConnection"));
             });
             //Register JWT Authentication Scheme
-            
+            services.AddIdentity<ToDoUser, IdentityRole>()
+              .AddEntityFrameworkStores<UsersDbContext>();
 
             //Add Dependency Injection
             services.AddTransient<IToDoManager, ToDoService>();
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
