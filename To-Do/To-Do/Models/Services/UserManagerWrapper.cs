@@ -19,5 +19,10 @@ namespace To_Do.Models.Services
             this.userManager = userManager;
             this.configuration = configuration;
         }
+        public Task AccessFailedAsync(ToDoUser user)
+        {
+            return userManager.AccessFailedAsync(user);
+        }
+
     }
 }
