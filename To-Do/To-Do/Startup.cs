@@ -29,7 +29,7 @@ namespace To_Do
         {
             services.AddMvc();
             //add filter to apply authorization to everything by default.
-            services.AddControllers(o => o.Filters.Add(new AuthorizeFilter());
+            services.AddControllers(o => o.Filters.Add(new AuthorizeFilter()));
             //Add To-Do DbContext
             services.AddDbContext<ToDoDbContext>(options =>
             {
