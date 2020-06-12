@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using To_Do.Models.Identity;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace To_Do
 {
@@ -27,7 +28,8 @@ namespace To_Do
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddControllers();
+            //add filter to apply authorization to everything by default.
+            services.AddControllers(o => o.Filters.Add(new AuthorizeFilter());
             //Add To-Do DbContext
             services.AddDbContext<ToDoDbContext>(options =>
             {
@@ -53,6 +55,8 @@ namespace To_Do
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+                //I Added This From My plural sight video
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
                 .AddJwtBearer(options =>
@@ -95,7 +99,7 @@ namespace To_Do
         
 
             //add authorization & authentication
-
+            // DO not do this after endpoints because then it will authorize  after the request
             app.UseAuthentication();
             app.UseAuthorization();
 
