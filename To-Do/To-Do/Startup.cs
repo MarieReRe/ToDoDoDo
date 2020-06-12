@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using To_Do.Models.Identity;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace To_Do
 {
@@ -52,6 +53,7 @@ namespace To_Do
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
                 .AddJwtBearer(options =>
                 {
