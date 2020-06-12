@@ -71,7 +71,8 @@ namespace To_Do
                         ValidateAudience = false,
                     };
 
-                });
+                })
+                .AddCookie();
 
         }
 
