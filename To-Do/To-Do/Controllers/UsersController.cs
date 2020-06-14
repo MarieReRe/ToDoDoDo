@@ -17,12 +17,16 @@ namespace To_Do.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        //private readonly UserManager<ToDoUser> userManager;
-        private readonly IUserManager userManager;
 
-        public UsersController(IUserManager userManager)
+        private readonly IUserManager userManager;
+        private readonly SignInManager<ToDoUser> signInManager;
+        private readonly IConfiguration configuration;
+
+        public UsersController(IUserManager userManager, SignInManager<ToDoUser> signInManager, IConfiguration configuration)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.configuration = configuration;
         }
 
         // Checking self authorization
