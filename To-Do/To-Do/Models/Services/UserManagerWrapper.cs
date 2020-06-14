@@ -63,7 +63,7 @@ namespace To_Do.Models.Services
             };
 
             var token = new JwtSecurityToken(
-                expires: DateTime.UtcNow.AddSeconds(10),
+                expires: DateTime.UtcNow.AddMinutes(20),
                 claims: tokenClaims,
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                 );

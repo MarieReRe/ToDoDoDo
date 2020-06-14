@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using To_Do.Models.Identity;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace To_Do
 {
@@ -25,7 +28,8 @@ namespace To_Do
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddControllers();
+            //add filter to apply authorization to everything by default.
+            services.AddControllers(o => o.Filters.Add(new AuthorizeFilter()));
             //Add To-Do DbContext
             services.AddDbContext<ToDoDbContext>(options =>
             {
@@ -37,13 +41,45 @@ namespace To_Do
                 //Install-Package Microsoft.EntityFrameworkCore.SqlServer
                 options.UseSqlServer(Configuration.GetConnectionString("UsersConnection"));
             });
-            //Register JWT Authentication Scheme
+           
             services.AddIdentity<ToDoUser, IdentityRole>()
               .AddEntityFrameworkStores<UsersDbContext>();
 
             //Add Dependency Injection
             services.AddTransient<IToDoManager, ToDoService>();
-          
+
+            //Register JWT Authentication Scheme
+           
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+                //I Added This From My plural sight video
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    var secret = Configuration["JWT:Secret"];
+                    var secretBytes = Encoding.UTF8.GetBytes(secret);
+
+                    // Symmetric Security Key is what encryps and decrypts your data
+                    var signingKey = new SymmetricSecurityKey(secretBytes);
+
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingKey,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                    };
+
+                })
+                .AddCookie();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +96,11 @@ namespace To_Do
             app.UseStaticFiles();
             app.UseRouting();
 
-            //add authorization
+        
+
+            //add authorization & authentication
+            // DO not do this after endpoints because then it will authorize  after the request
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -43,7 +43,8 @@ namespace ToDo.Tests
             Assert.IsType<NotFoundResult>(actionResult.Result);
 
         }
-        // Testing user functionality
+        // ----------------------------Testing user functionality-----------------------------------
+        //----------------------------
         [Fact]
         public async Task LoginFailsWithMissingUser()
         {
@@ -111,7 +112,46 @@ namespace ToDo.Tests
             Assert.Equal(user.Id, userWithToken.UserId);
             Assert.Equal("test token!", userWithToken.Token);
         }
+        [Fact]
+        public async Task UpdateMissingUserReturnsA404()
+        {
+            //arrange
+            var userService = new Mock<IUserManager>();
 
+            userService.Setup(s => s.UpdateAsync(null)).Throws(new System.ArgumentNullException());
+            
+            var controller = new UsersController(userService.Object);
+            //act
+            var result = await controller.UpdateUser("aNewName", new UpdateUserData());
+
+            // assert
+            Assert.IsType<NotFoundResult>(result);
+        }
+        //change this to a theory
+      /*  [Fact]
+        public async Task UserUpdatedSuccess()
+        {
+            //arrange
+            var userService = new Mock<IUserManager>();
+
+            var user = new ToDoUser
+            {
+                Id = "77",
+                UserName = "Wow"
+            };
+
+            userService.Setup(s => s.FindByIdAsync(user.Id)).ReturnsAsync(user);
+            var controller = new UsersController(userService.Object);
+            var data = new UpdateUserData { FirstName = "Jessica" };
+
+            //act
+            var result = await controller.UpdateUser(user.Id, data);
+            // assert
+         var okResult = Assert.IsType<OkObjectResult>(result);
+          var savedUser =   Assert.IsType<UserDTO>(okResult.Value)
+            userService.Verify(s => s.UpdateAsync(user));
+        }
+      */
 
     }
 }

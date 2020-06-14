@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -16,15 +17,49 @@ namespace To_Do.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        //private readonly UserManager<ToDoUser> userManager;
-        private readonly IUserManager userManager;
 
-        public UsersController(IUserManager userManager)
+        private readonly IUserManager userManager;
+        private readonly SignInManager<ToDoUser> signInManager;
+        private readonly IConfiguration configuration;
+
+        public UsersController(IUserManager userManager, SignInManager<ToDoUser> signInManager, IConfiguration configuration)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.configuration = configuration;
         }
 
-      
+        // Checking self authorization
+        [Authorize]
+        [HttpGet("Self")]
+        public async Task<IActionResult> Self()
+        {
+            if (HttpContext.User.Identity is ClaimsIdentity identity)
+            {
+                var usernameClaim = identity.FindFirst("UserId");
+                var userId = usernameClaim.Value;
+
+                var user = await userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(new
+                {
+                    UserId = user.Id,
+                    user.Email,
+                    user.FirstName,
+                    user.LastName,
+                    user.BirthDate,
+                });
+            }
+
+            return Unauthorized();
+        }
+
+
+
         //Fist we need to register a user
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterData register)

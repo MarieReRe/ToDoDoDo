@@ -19,7 +19,8 @@ namespace To_Do.Models
         public string Assignee {get;set;} 
 
         public int Difficulty { get; set; }
+        public string CreatedByUserId { get; set; }
 
-       
+
     }
 }
